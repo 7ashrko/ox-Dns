@@ -1,0 +1,27 @@
+
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PS4 DNS Control</title><link rel="stylesheet" href="/static/style.css">
+</head><body>
+<header><div><div class="brand">PS4<span>DNS</span></div><div class="sub">Firmware Update Control Center</div></div>
+<div class="pill {{'up' if active else 'down'}}"><i></i> Unbound {{'Online' if active else 'Offline'}}</div></header>
+<main>
+<section class="hero"><div><div class="eyebrow">CONTROL CENTER</div><h1>PS4 DNS <span>Protection</span></h1>
+<p>Manage the firmware-update DNS blocklist from one secure dashboard.</p></div>
+<div class="console">PS4 <b>13.52</b><small>DNS FILTER</small></div></section>
+<div class="cards">
+<div class="card"><small>DNS ENGINE</small><strong>{{'ONLINE' if active else 'OFFLINE'}}</strong><em>Unbound</em></div>
+<div class="card"><small>BLOCKED HOSTS</small><strong>{{domains|length}}</strong><em>Active rules</em></div>
+<div class="card"><small>LIST MODE</small><strong>NXDOMAIN</strong><em>Update endpoints</em></div>
+</div>
+<section class="panel"><div class="panelhead"><div><h2>Blocked domains</h2><p>Only explicit hostnames are blocked. The whole PlayStation domain is not.</p></div>
+<form method="post" action="/domains"><input name="domain" placeholder="add.example.com" required><button>Add domain</button></form></div>
+{% with msgs=get_flashed_messages(with_categories=true) %}{% for c,m in msgs %}<div class="msg {{c}}">{{m}}</div>{% endfor %}{% endwith %}
+<div class="table">
+{% for d in domains %}<div class="row"><code>{{d}}</code><form method="post" action="/domains/delete"><input type="hidden" name="domain" value="{{d}}"><button class="remove">Remove</button></form></div>
+{% else %}<div class="empty">No domains configured.</div>{% endfor %}
+</div></section>
+<section class="panel help"><h2>PS4 setup</h2><div class="steps"><div><b>01</b> Set PS4 DNS to your VPS public IP.</div><div><b>02</b> Use the same VPS IP as primary and secondary DNS.</div><div><b>03</b> Keep your VPS firewall restricted to your home public IP.</div></div></section>
+</main><footer>PS4 DNS Control Center · Conservative update filtering</footer>
+</body></html>
